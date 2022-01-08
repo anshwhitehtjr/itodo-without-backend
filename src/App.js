@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Alert from "./AppComponents/Alert";
+import Navbar from "./AppComponents/Navbar";
+import Home from "./Pages/Home";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import About from "./Pages/About";
 
-function App() {
+function App () {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (type, message) => {
+    setAlert({
+      msg: message,
+      type: type
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 5000);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar title="iTodo" mode="light" />
+      <Alert alert={ alert } />
+      <Switch>
+        <Route exact path='/'>
+          <Home showAlert={ showAlert } />
+        </Route>
+        <Route exact path='/about'>
+          <About showAlert={ showAlert } />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
